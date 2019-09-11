@@ -58,12 +58,7 @@ class ViewController: UIViewController,UITableViewDelegate, UITableViewDataSourc
             cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: cellReuseIdentifier)
 
         let switchView = UISwitch(frame: .zero)
-        if switchView.isOn {
-            switchView.setOn(true, animated: true)
-        }
-        else {
         switchView.setOn(false, animated: true)
-        }
         switchView.tag = indexPath.row // for detect which row switch Changed
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
@@ -80,26 +75,21 @@ class ViewController: UIViewController,UITableViewDelegate, UITableViewDataSourc
         return cell
     }
 
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let currentCell = tableView.cellForRow(at: indexPath)!
-//
-//
-//        if selectedIndexPaths .contains(indexPath.row) {
-//            let switchView = currentCell.viewWithTag(indexPath.row) as? UISwitch
-//            switchView?.isOn = false
-//            numberOfListSelected -= 1
-//selectedIndexPaths.remo
-//        }
-//
-//        if sender.isOn {
-//            numberOfListSelected += 1
-//        }
-//        else {
-//            numberOfListSelected -= 1
-//        }
-//        print(numberOfListSelected)
-//        self.title = "Selected count = \(numberOfListSelected )"
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentCell = tableView.cellForRow(at: indexPath)!.subviews.filter { $0 is UISwitch } as? [UISwitch]
+        if (currentCell?.first!.isOn)! {
+                    numberOfListSelected -= 1
+            currentCell?.first?.isOn = false
+                }
+                else {
+                    numberOfListSelected += 1
+            currentCell?.first?.isOn = true
+
+                }
+                print(numberOfListSelected)
+                self.title = "Selected count = \(numberOfListSelected )"
+    }
+    
     private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
